@@ -1,0 +1,80 @@
+﻿@model HotelManagementSystem.Areas.Admin.ViewModel.AccomodationTypeViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>Accomodation Type</h2>
+<hr/>
+<form>
+    <div class="input-group mb-3">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Search.." value="@Model.SearchTerm">
+        <div class="input-group-append" id="button-addon4">
+            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i>Search</button>
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index","AccomodationTypes")"><i class="fas fa-redo mr-1"></i>Reset</a>
+            <button data-href="@Url.Action("Action","AccomodationTypes")" class="data-href btn btn-outline-success" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus-circle mr-1"></i>Create</button>
+        </div>
+    </div>
+</form>
+@if (Model != null && Model.AccomodationTypes != null && Model.AccomodationTypes.Count() > 0)
+{
+    <table class="table tab">
+        <thead>
+            <tr>
+
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var accomodationType in Model.AccomodationTypes)
+            {
+                <tr>
+
+                    <td>@accomodationType.Name</td>
+                    <td>@accomodationType.Description</td>
+                    <td>
+                        <button data-href="@Url.Action("Action","AccomodationTypes",new {id=accomodationType.Id})" type="button" class="data-href btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt mr-1"></i>Edit</button>
+                        <button data-href="@Url.Action("Delete","AccomodationTypes",new {id=accomodationType.Id})" type="button" class="data-href btn btn-danger" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-trash-alt mr-1"></i>Delete</button>
+                       
+                    </td>
+                </tr>
+
+            }
+
+
+
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        Sorry! No records exists.
+    </div>
+}
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(".data-href").click(function() {
+            $.ajax({
+                    url: $(this).attr("data-href"),
+                })
+                .done(function(response) {
+                    $("#exampleModal .modal-dialog").html(response);
+                });
+
+        });
+    </script>
+}
